@@ -1,6 +1,7 @@
 "use client";
 
 import React, {
+  ReactNode,
   createContext,
   useContext,
   useLayoutEffect,
@@ -12,11 +13,16 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 import { twMerge } from "tailwind-merge";
 gsap.registerPlugin(ScrollTrigger);
 
-const HorizontalScrollContext = createContext(null);
+const HorizontalScrollContext = createContext<string | null>(null);
 
-function HorizontalScroll({ children, name }) {
-  const container = useRef();
-  const slider = useRef();
+type HorizontalScroll = {
+  children: ReactNode[];
+  name: string;
+};
+
+function HorizontalScroll({ children, name }: HorizontalScroll) {
+  const container = useRef<HTMLDivElement>(null);
+  const slider = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     let ctx = gsap.context(() => {
@@ -55,7 +61,14 @@ function HorizontalScroll({ children, name }) {
   );
 }
 
-const HorizontalScrollPanel = ({ children, className }) => {
+type HorizontalScrollPanel = {
+  children: ReactNode;
+  className: string;
+};
+const HorizontalScrollPanel = ({
+  children,
+  className,
+}: HorizontalScrollPanel) => {
   const name = useContext(HorizontalScrollContext);
   return (
     <div className={twMerge(`${name} h-[100vh] w-[100vw]`, className)}>
